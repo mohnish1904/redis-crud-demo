@@ -22,6 +22,7 @@ public class StudentRepository {
     }
 
     public Student findStudentById(Integer id){
+        System.out.println("From the DB");
         return (Student) template.opsForHash().get(HASH_KEY, id);
     }
 

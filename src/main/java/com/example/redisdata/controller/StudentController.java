@@ -2,6 +2,8 @@ package com.example.redisdata.controller;
 
 import com.example.redisdata.entity.Student;
 import com.example.redisdata.repo.StudentRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(key = "#id", value = "Student", unless = "#result.roll > 10")
     public Student getStudentById(@PathVariable Integer id) {
         return studentRepository.findStudentById(id);
     }
@@ -33,6 +36,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @CacheEvict(key = "#id", value = "Student")
     public String deleteStudentById(@PathVariable Integer id) {
         return studentRepository.deleteById(id);
     }
